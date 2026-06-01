@@ -3,6 +3,9 @@ import Credentials from 'next-auth/providers/credentials';
 import { makeAuthUseCases } from '../container';
 
 export const authConfig: NextAuthConfig = {
+  pages: {
+    signIn: '/auth',
+  },
   providers: [
     Credentials({
       credentials: {
