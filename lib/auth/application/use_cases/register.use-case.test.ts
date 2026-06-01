@@ -27,10 +27,11 @@ describe('RegisterUseCase', () => {
   });
 
   it('throws ConflictError if email already taken', async () => {
+    const { randomUUID } = await import('crypto');
     userRepo.findByEmail.mockResolvedValue(
-      new User('id', 'a@b.com', 'pw', 'USER')
+      new User(randomUUID(), 'a@b.com', 'password123', 'USER')
     );
-    await expect(useCase.execute({ email: 'a@b.com', password: '123' }))
-      .rejects.toThrow('Email already in use');
+    await expect(useCase.execute({ email: 'a@b.com', password: '123456' }))
+      .rejects.toThrow('Este correo ya esta en uso');
   });
 });
