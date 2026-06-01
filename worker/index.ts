@@ -45,8 +45,19 @@ async function bootstrap() {
       const diff: DiffEntry[] = [];
       const missingSelectorFields: string[] = [];
 
-      for (const { field } of selectors) {
-        const currentVal = current.extractedData[field] ?? '';
+      for (const { field, regex } of selectors) {
+        let currentVal = current.extractedData[field] ?? '';
+
+        // Regex fallback: if CSS selector returned empty and regex exists, search raw HTML
+        if (currentVal === '' && regex) {
+          try {
+            const match = current.rawHTML.match(new RegExp(regex, 'i'));
+            if (match) currentVal = match[0].trim();
+          } catch {
+            // invalid regex — skip fallback
+          }
+        }
+
         const previousVal = previous?.extractedData[field] ?? null;
 
         if (currentVal === '') {
