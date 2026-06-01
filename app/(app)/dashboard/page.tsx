@@ -40,7 +40,7 @@ export default async function DashboardPage() {
   return (
     <main className="max-w-6xl mx-auto w-full p-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-ink">Dashboard</h1>
         <Link
           href="/monitors/new"
           className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
@@ -55,39 +55,39 @@ export default async function DashboardPage() {
           { label: 'Alertas hoy', value: alertsToday },
           { label: 'Cambios esta semana', value: changesThisWeek },
         ].map(stat => (
-          <div key={stat.label} className="bg-white border rounded-xl p-5 shadow-sm">
-            <p className="text-sm text-gray-500 mb-1">{stat.label}</p>
-            <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+          <div key={stat.label} className="bg-surface border border-edge rounded-xl p-5 shadow-sm">
+            <p className="text-sm text-ink-muted mb-1">{stat.label}</p>
+            <p className="text-3xl font-bold text-ink">{stat.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-white border rounded-xl shadow-sm overflow-hidden">
+      <div className="bg-surface border border-edge rounded-xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b">
+          <thead className="bg-surface-muted border-b border-edge">
             <tr>
               {['Nombre', 'URL', 'Estado', 'Última corrida', 'Acciones'].map(h => (
-                <th key={h} className="text-left px-4 py-3 font-medium text-gray-600">{h}</th>
+                <th key={h} className="text-left px-4 py-3 font-medium text-ink-muted">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {monitors.length === 0 && (
               <tr>
-                <td colSpan={5} className="text-center py-12 text-gray-400">
+                <td colSpan={5} className="text-center py-12 text-ink-faint">
                   Sin monitores aún.{' '}
                   <Link href="/monitors/new" className="text-blue-500 hover:underline">Crea uno</Link>
                 </td>
               </tr>
             )}
             {monitors.map(m => (
-              <tr key={m.id} className="border-b last:border-0 hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium text-gray-900">{m.name ?? m.id.slice(0, 8)}</td>
-                <td className="px-4 py-3 text-gray-500 max-w-[220px] truncate">{m.target.url}</td>
+              <tr key={m.id} className="border-b border-edge last:border-0 hover:bg-surface-muted transition-colors">
+                <td className="px-4 py-3 font-medium text-ink">{m.name ?? m.id.slice(0, 8)}</td>
+                <td className="px-4 py-3 text-ink-muted max-w-[220px] truncate">{m.target.url}</td>
                 <td className="px-4 py-3">
                   <span className={`inline-block w-3 h-3 rounded-full ${statusColor(m)}`} />
                 </td>
-                <td className="px-4 py-3 text-gray-500">
+                <td className="px-4 py-3 text-ink-muted">
                   {m.target.lastRunAt ? new Date(m.target.lastRunAt).toLocaleString('es-MX') : '—'}
                 </td>
                 <td className="px-4 py-3"><DeleteMonitorButton id={m.id} /></td>

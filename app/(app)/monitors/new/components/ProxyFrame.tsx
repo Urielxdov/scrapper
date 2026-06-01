@@ -35,14 +35,14 @@ export function ProxyFrame({ onPinAdded, onUrlChange }: ProxyFrameProps) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex gap-2 p-3 border-b bg-white">
+      <div className="flex gap-2 p-3 border-b border-edge bg-surface">
         <input
           type="text"
           value={inputUrl}
           onChange={e => setInputUrl(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleLoad()}
           placeholder="https://ejemplo.com/producto"
-          className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="flex-1 border border-edge rounded-lg px-3 py-2 text-sm bg-surface text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <button
           onClick={handleLoad}
@@ -52,10 +52,10 @@ export function ProxyFrame({ onPinAdded, onUrlChange }: ProxyFrameProps) {
         </button>
       </div>
 
-      <div className="flex-1 relative bg-gray-100">
+      <div className="flex-1 relative bg-surface-muted">
         {!iframeSrc && (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
-            Ingresa una URL y haz clic en <strong className="mx-1">Cargar</strong> para comenzar
+          <div className="absolute inset-0 flex items-center justify-center text-ink-faint text-sm">
+            Ingresa una URL y haz clic en <strong className="mx-1 text-ink-muted">Cargar</strong> para comenzar
           </div>
         )}
         {iframeSrc && (
@@ -67,7 +67,7 @@ export function ProxyFrame({ onPinAdded, onUrlChange }: ProxyFrameProps) {
           />
         )}
         {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/80 text-sm text-gray-500">
+          <div className="absolute inset-0 flex items-center justify-center bg-surface/80 text-sm text-ink-muted">
             Cargando página...
           </div>
         )}

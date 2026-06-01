@@ -40,7 +40,6 @@ export default function NewMonitorPage() {
     setPreviewLoading(true);
     setPreviewError(null);
     setPreviewResults([]);
-
     try {
       const res = await fetch('/api/preview', {
         method: 'POST',
@@ -69,11 +68,7 @@ export default function NewMonitorPage() {
         body: JSON.stringify({
           name: name.trim() || undefined,
           url: currentUrl,
-          selectors: previewResults.map(r => ({
-            field: r.label,
-            css: r.css,
-            regex: r.regex,
-          })),
+          selectors: previewResults.map(r => ({ field: r.label, css: r.css, regex: r.regex })),
           frequencyMinutes: frequency,
         }),
       });
@@ -88,27 +83,27 @@ export default function NewMonitorPage() {
   return (
     <div className="flex flex-1 overflow-hidden">
       {/* Left panel */}
-      <div className="w-[380px] flex-shrink-0 flex flex-col border-r bg-white overflow-y-auto">
+      <div className="w-[380px] flex-shrink-0 flex flex-col border-r border-edge bg-surface overflow-y-auto">
         <div className="p-6 space-y-5 flex-1">
-          <h1 className="text-xl font-bold text-gray-900">Nuevo Monitor</h1>
+          <h1 className="text-xl font-bold text-ink">Nuevo Monitor</h1>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nombre (opcional)</label>
+            <label className="block text-sm font-medium text-ink-muted mb-1">Nombre (opcional)</label>
             <input
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="Mi monitor de precios"
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full border border-edge rounded-lg px-3 py-2 text-sm bg-surface text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Frecuencia de monitoreo</label>
+            <label className="block text-sm font-medium text-ink-muted mb-1">Frecuencia de monitoreo</label>
             <select
               value={frequency}
               onChange={e => setFrequency(Number(e.target.value))}
-              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full border border-edge rounded-lg px-3 py-2 text-sm bg-surface text-ink focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               {FREQUENCY_OPTIONS.map(o => (
                 <option key={o.value} value={o.value}>{o.label}</option>
@@ -117,14 +112,14 @@ export default function NewMonitorPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-ink-muted mb-2">
               Campos detectados{pins.length > 0 && ` (${pins.length})`}
             </label>
             <PinList pins={pins} onRemove={handleRemovePin} />
           </div>
         </div>
 
-        <div className="p-6 border-t">
+        <div className="p-6 border-t border-edge">
           <button
             onClick={handlePreview}
             disabled={!canPreview}
@@ -132,12 +127,8 @@ export default function NewMonitorPage() {
           >
             Previsualizar resultados
           </button>
-          {!currentUrl && (
-            <p className="text-xs text-gray-400 mt-2 text-center">Carga una URL primero</p>
-          )}
-          {currentUrl && pins.length === 0 && (
-            <p className="text-xs text-gray-400 mt-2 text-center">Haz clic en elementos de la página</p>
-          )}
+          {!currentUrl && <p className="text-xs text-ink-faint mt-2 text-center">Carga una URL primero</p>}
+          {currentUrl && pins.length === 0 && <p className="text-xs text-ink-faint mt-2 text-center">Haz clic en elementos de la página</p>}
         </div>
       </div>
 
