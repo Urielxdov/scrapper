@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/shared/prisma';
-import { auth } from '@/lib/auth/infrastructure/adapters/authjs.config';
+import { auth } from '@/lib/auth/infrastructure/adapters/auth';
 import { redirect } from 'next/navigation';
 import { DeleteMonitorButton } from '@/app/components/DeleteMonitorButton';
 

@@ -1,1 +1,3 @@
-export { handlers as GET, handlers as POST } from '@/lib/auth/infrastructure/adapters/authjs.config';
+import { handlers } from '@/lib/auth/infrastructure/adapters/auth';
+
+export const { GET, POST } = handlers;

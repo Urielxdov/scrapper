@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth/infrastructure/adapters/authjs.config';
+import { auth } from '@/lib/auth/infrastructure/adapters/auth';
 import { makeMonitoringUseCases } from '@/lib/monitoring/infrastructure/container';
 import { monitorLogger } from '@/lib/shared/logger';
 

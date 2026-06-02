@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth/infrastructure/adapters/authjs.config';
+import { auth } from '@/lib/auth/infrastructure/adapters/auth';
 import { MongooseScrapedDocumentRepository } from '@/lib/scraping/infrastructure/repositories/mongoose-scraped-document.repository';
 
 type Params = { params: Promise<{ id: string }> };

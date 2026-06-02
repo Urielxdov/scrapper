@@ -1,28 +1,15 @@
-import NextAuth, { type NextAuthConfig } from 'next-auth';
+// /lib/auth/infrastructure/adapters/authjs.config.ts
+import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { makeAuthUseCases } from '../container';
 
 export const authConfig: NextAuthConfig = {
+  secret: process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET,
   pages: {
     signIn: '/auth',
   },
   providers: [
-    Credentials({
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
-        const { login } = makeAuthUseCases();
-        const user = await login.execute({
-          email: credentials.email as string,
-          password: credentials.password as string,
-        });
-        if (!user) return null;
-        return { id: user.id, email: user.email, role: user.role };
-      },
-    }),
+    // Se deja el provider vacío para que el middleware sepa que existe el flujo
+    Credentials({}),
   ],
   session: { strategy: 'jwt' },
   callbacks: {
@@ -36,5 +23,3 @@ export const authConfig: NextAuthConfig = {
     },
   },
 };
-
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

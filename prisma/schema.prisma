@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
@@ -8,6 +14,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
+enum ChangeType {
+  CONTENT_DIFF
+  SELECTOR_MISSING
+}
+
 model User {
   id        String    @id @default(uuid())
   email     String    @unique
@@ -15,11 +31,6 @@ model User {
   role      Role      @default(USER)
   monitors  Monitor[]
   createdAt DateTime  @default(now())
-}
-
-enum Role { 
-  ADMIN 
-  USER 
 }
 
 model Target {
@@ -37,9 +48,9 @@ model Monitor {
   id        String   @id @default(uuid())
   name      String?
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   targetId  String
-  target    Target   @relation(fields: [targetId], references: [id])
+  target    Target   @relation(fields: [targetId], references: [id], onDelete: Cascade)
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
 
@@ -49,13 +60,8 @@ model Monitor {
 model Change {
   id         String     @id @default(uuid())
   targetId   String
-  target     Target     @relation(fields: [targetId], references: [id])
+  target     Target     @relation(fields: [targetId], references: [id], onDelete: Cascade)
   type       ChangeType @default(CONTENT_DIFF)
   diff       Json
   detectedAt DateTime   @default(now())
-}
-
-enum ChangeType { 
-  CONTENT_DIFF 
-  SELECTOR_MISSING 
 }
