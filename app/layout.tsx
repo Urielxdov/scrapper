@@ -4,7 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider, themeScript } from '@/app/components/ThemeProvider';
 import './globals.css';
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' });
 
 export const metadata: Metadata = {
   title: 'Scrapper',

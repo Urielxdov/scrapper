@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme=dark] *));
+
 /* ── Semantic design tokens (light) ─────────────────────────── */
 @theme {
   --color-surface:        #ffffff;
