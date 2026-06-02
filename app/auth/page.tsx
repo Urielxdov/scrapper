@@ -36,8 +36,7 @@ function AuthForm () {
       if (result?.error) {
         setError('Credenciales incorrectas. Intenta de nuevo')
       } else {
-        router.refresh()
-        router.push('/dashboard')
+        window.location.assign('/dashboard')
       }
     } catch (err) {
       console.error('Login error', err)
