@@ -6,8 +6,8 @@ type Params = { params: Promise<{ id: string }> };
 export async function GET(req: NextRequest, { params }: Params) {
   const { id } = await params;
   const url = new URL(req.url);
-  const limit = Math.min(parseInt(url.searchParams.get('limit') ?? '50'), 100);
-  const offset = parseInt(url.searchParams.get('offset') ?? '0');
+  const limit = Math.min(Math.max(1, parseInt(url.searchParams.get('limit') ?? '50') || 50), 100);
+  const offset = Math.max(0, parseInt(url.searchParams.get('offset') ?? '0') || 0);
 
   const monitor = await prisma.monitor.findUnique({ where: { id }, select: { targetId: true } });
   if (!monitor) return NextResponse.json({ error: 'Not found' }, { status: 404 });

@@ -3,13 +3,12 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-
-type DiffEntry = { field: string; oldValue: string; newValue: string };
+import type { DiffEntry, ChangeType } from '@/lib/shared/types/monitor.types';
 
 type ChangeItem = {
   id: string;
-  type: 'CONTENT_DIFF' | 'SELECTOR_MISSING';
-  diff: DiffEntry[];
+  type: ChangeType;
+  diff: unknown;
   detectedAt: string;
   target: {
     url: string;
@@ -34,7 +33,7 @@ export function ChangesFeed() {
 
   useEffect(() => {
     fetch('/api/changes')
-      .then(r => r.json())
+      .then(r => { if (!r.ok) throw new Error('fetch failed'); return r.json(); })
       .then(setChanges)
       .catch(() => setError('Error al cargar cambios'))
       .finally(() => setLoading(false));
@@ -94,7 +93,7 @@ export function ChangesFeed() {
               </div>
             </div>
             <ul className="flex flex-col gap-0.5 pl-1">
-              {(c.diff as DiffEntry[]).map((d, i) => (
+              {(Array.isArray(c.diff) ? c.diff as DiffEntry[] : []).map((d, i) => (
                 <li key={i} className="text-xs text-ink-muted font-mono">
                   <span className="text-ink-faint">{d.field}:</span>{' '}
                   <span className="line-through text-red-400">{d.oldValue || '—'}</span>

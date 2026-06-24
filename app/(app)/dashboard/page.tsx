@@ -15,14 +15,12 @@ export default async function DashboardPage() {
   const weekStart = new Date(todayStart);
   weekStart.setDate(weekStart.getDate() - 7);
 
-  const changes = await prisma.change.findMany({
-    select: { targetId: true, detectedAt: true },
-    orderBy: { detectedAt: 'desc' },
-  });
-
-  const alertsToday = changes.filter(c => c.detectedAt >= todayStart).length;
-  const changesThisWeek = changes.filter(c => c.detectedAt >= weekStart).length;
-  const recentTargetIds = new Set(changes.slice(0, 50).map(c => c.targetId));
+  const [alertsToday, changesThisWeek, recentChanges] = await Promise.all([
+    prisma.change.count({ where: { detectedAt: { gte: todayStart } } }),
+    prisma.change.count({ where: { detectedAt: { gte: weekStart } } }),
+    prisma.change.findMany({ select: { targetId: true }, orderBy: { detectedAt: 'desc' }, take: 50 }),
+  ]);
+  const recentTargetIds = new Set(recentChanges.map(c => c.targetId));
 
   function statusColor(monitor: typeof monitors[0]): string {
     if (!monitor.isActive) return 'bg-red-500';

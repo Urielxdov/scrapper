@@ -1,13 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
-type DiffEntry = { field: string; oldValue: string; newValue: string };
+import type { DiffEntry, ChangeType } from '@/lib/shared/types/monitor.types';
 
 type ChangeRecord = {
   id: string;
-  type: 'CONTENT_DIFF' | 'SELECTOR_MISSING';
-  diff: DiffEntry[];
+  type: ChangeType;
+  diff: unknown;
   detectedAt: string;
 };
 
@@ -20,13 +19,16 @@ export function ChangesHistory({ monitorId }: { monitorId: string }) {
   const [total, setTotal] = useState(0);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     setLoading(true);
+    setExpanded(new Set());
     fetch(`/api/monitors/${monitorId}/changes?limit=${PAGE_SIZE}&offset=${offset}`)
-      .then(r => r.json() as Promise<ApiResponse>)
+      .then(r => { if (!r.ok) throw new Error('fetch failed'); return r.json() as Promise<ApiResponse>; })
       .then(res => { setRecords(res.data); setTotal(res.total); })
+      .catch(() => setError('Error al cargar historial'))
       .finally(() => setLoading(false));
   }, [monitorId, offset]);
 
@@ -43,6 +45,8 @@ export function ChangesHistory({ monitorId }: { monitorId: string }) {
   if (loading) {
     return <p className="py-8 text-center text-sm text-ink-muted animate-pulse">Cargando historial...</p>;
   }
+
+  if (error) return <p className="py-8 text-center text-sm text-red-500">{error}</p>;
 
   if (records.length === 0) {
     return <p className="py-8 text-center text-sm text-ink-faint">Sin cambios registrados.</p>;
@@ -61,7 +65,7 @@ export function ChangesHistory({ monitorId }: { monitorId: string }) {
           </thead>
           <tbody>
             {records.map(r => {
-              const diff = r.diff as DiffEntry[];
+              const diff = Array.isArray(r.diff) ? r.diff as DiffEntry[] : [];
               const isExpanded = expanded.has(r.id);
               const visible = isExpanded ? diff : diff.slice(0, 3);
               return (
