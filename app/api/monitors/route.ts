@@ -1,25 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth/infrastructure/adapters/auth';
+import { prisma } from '@/lib/shared/prisma';
 import { makeMonitoringUseCases } from '@/lib/monitoring/infrastructure/container';
 import { monitorLogger } from '@/lib/shared/logger';
 
 export async function GET() {
-  const session = await auth();
-  const userId = session!.user!.id!;
-  const { list } = makeMonitoringUseCases();
-  const monitors = await list.execute(userId);
-  monitorLogger.debug({ userId, count: monitors.length }, 'monitors listed');
+  const monitors = await prisma.monitor.findMany({
+    include: { target: true },
+    orderBy: { createdAt: 'desc' },
+  });
   return NextResponse.json(monitors);
 }
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  const userId = session!.user!.id!;
   const body = await req.json();
-  const { url, selectors, frequencyMinutes, name } = body;
+  const { url, selectors, frequencyMinutes, name, userId } = body;
 
-  if (!url || !selectors || !frequencyMinutes) {
-    return NextResponse.json({ error: 'url, selectors and frequencyMinutes required' }, { status: 400 });
+  if (!url || !selectors || !frequencyMinutes || !userId) {
+    return NextResponse.json({ error: 'url, selectors, frequencyMinutes and userId required' }, { status: 400 });
   }
 
   try {

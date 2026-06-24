@@ -1,9 +1,8 @@
 import { NotifyChangeUseCase } from './notify-change.use-case';
 import { INotificationPort } from '../../domain/ports/notification.port';
 import { IMonitorRepository } from '@/lib/monitoring/domain/ports/monitor-repository.port';
-import { IUserRepository } from '@/lib/auth/domain/ports/user-repository.port';
+import { IUserRepository } from '@/lib/shared/types/user.types';
 import { Monitor } from '@/lib/monitoring/domain/entities/monitor.entity';
-import { User } from '@/lib/auth/domain/entities/user.entity';
 import { DiffEntry } from '@/lib/shared/types/monitor.types';
 import { randomUUID } from 'crypto';
 
@@ -19,9 +18,8 @@ describe('NotifyChangeUseCase', () => {
     };
     const userRepo: jest.Mocked<IUserRepository> = {
       findById: jest.fn()
-        .mockResolvedValueOnce(new User(randomUUID(), 'user1@test.com', 'password1', 'USER'))
-        .mockResolvedValueOnce(new User(randomUUID(), 'user2@test.com', 'password2', 'USER')),
-      findByEmail: jest.fn(), save: jest.fn(),
+        .mockResolvedValueOnce({ id: randomUUID(), email: 'user1@test.com' })
+        .mockResolvedValueOnce({ id: randomUUID(), email: 'user2@test.com' }),
     };
 
     const uc = new NotifyChangeUseCase(notifier, monitorRepo, userRepo);

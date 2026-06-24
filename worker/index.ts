@@ -6,7 +6,7 @@ import { DynamicScraperAdapter } from '../lib/scraping/infrastructure/adapters/d
 import { MongooseScrapedDocumentRepository } from '../lib/scraping/infrastructure/repositories/mongoose-scraped-document.repository';
 import { ScrapeTargetUseCase } from '../lib/scraping/application/use_cases/scrape-target.use-case';
 import { PrismaMonitorRepository } from '../lib/monitoring/infrastructure/repositories/prisma-monitor.repository';
-import { PrismaUserRepository } from '../lib/auth/infrastructure/repositories/prisma-user.repository';
+import { PrismaUserRepository } from '../lib/shared/infrastructure/prisma-user.repository';
 import { NodemailerAdapter } from '../lib/notifications/infrastructure/adapters/nodemailer.adapter';
 import { NotifyChangeUseCase } from '../lib/notifications/application/use_cases/notify-change.use-case';
 import { DiffEntry } from '../lib/shared/types/monitor.types';

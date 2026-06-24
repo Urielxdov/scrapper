@@ -1,17 +1,9 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/shared/prisma';
-import { auth } from '@/lib/auth/infrastructure/adapters/auth';
-import { redirect } from 'next/navigation';
 import { DeleteMonitorButton } from '@/app/components/DeleteMonitorButton';
 
 export default async function DashboardPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect('/auth');
-
-  const userId = session.user.id!;
-
   const monitors = await prisma.monitor.findMany({
-    where: { userId },
     include: { target: true },
     orderBy: { createdAt: 'desc' },
   });
@@ -22,7 +14,6 @@ export default async function DashboardPage() {
   weekStart.setDate(weekStart.getDate() - 7);
 
   const changes = await prisma.change.findMany({
-    where: { target: { monitors: { some: { userId } } } },
     select: { targetId: true, detectedAt: true },
     orderBy: { detectedAt: 'desc' },
   });

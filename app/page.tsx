@@ -322,10 +322,10 @@ export default function LandingPage() {
               <span style={{ fontWeight: 600, fontSize: 14, letterSpacing: '-0.02em' }}>Scrapper</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Link href="/auth?tab=login" className="btn-ghost" style={{ fontSize: 13, color: '#94a3b8', textDecoration: 'none', padding: '7px 14px', borderRadius: 8 }}>
+              <Link href="/dashboard" className="btn-ghost" style={{ fontSize: 13, color: '#94a3b8', textDecoration: 'none', padding: '7px 14px', borderRadius: 8 }}>
                 Iniciar sesión
               </Link>
-              <Link href="/auth?tab=register" className="btn-glow" style={{ fontSize: 13, fontWeight: 600, color: '#fff', textDecoration: 'none', padding: '7px 18px', borderRadius: 10 }}>
+              <Link href="/dashboard" className="btn-glow" style={{ fontSize: 13, fontWeight: 600, color: '#fff', textDecoration: 'none', padding: '7px 18px', borderRadius: 10 }}>
                 Comenzar gratis
               </Link>
             </div>
@@ -382,10 +382,10 @@ export default function LandingPage() {
               </p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <Link href="/auth?tab=register" className="btn-glow" style={{ fontSize: 14, fontWeight: 700, color: '#fff', textDecoration: 'none', padding: '12px 24px', borderRadius: 12 }}>
+                <Link href="/dashboard" className="btn-glow" style={{ fontSize: 14, fontWeight: 700, color: '#fff', textDecoration: 'none', padding: '12px 24px', borderRadius: 12 }}>
                   Empezar gratis →
                 </Link>
-                <Link href="/auth?tab=login" className="glass btn-ghost" style={{ fontSize: 13, fontWeight: 500, color: '#94a3b8', textDecoration: 'none', padding: '11px 18px', borderRadius: 12 }}>
+                <Link href="/dashboard" className="glass btn-ghost" style={{ fontSize: 13, fontWeight: 500, color: '#94a3b8', textDecoration: 'none', padding: '11px 18px', borderRadius: 12 }}>
                   Iniciar sesión
                 </Link>
               </div>
@@ -478,7 +478,7 @@ export default function LandingPage() {
               <span style={{ background: 'linear-gradient(135deg, #818cf8, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Gratis.</span>
             </h2>
             <p style={{ fontSize: 15, color: '#475569', marginBottom: 28, fontWeight: 300, position: 'relative' }}>Sin tarjeta de crédito. Sin configuraciones complicadas. En 2 minutos.</p>
-            <Link href="/auth?tab=register" className="btn-glow" style={{ display: 'inline-block', fontSize: 15, fontWeight: 700, color: '#fff', textDecoration: 'none', padding: '14px 30px', borderRadius: 14, position: 'relative' }}>
+            <Link href="/dashboard" className="btn-glow" style={{ display: 'inline-block', fontSize: 15, fontWeight: 700, color: '#fff', textDecoration: 'none', padding: '14px 30px', borderRadius: 14, position: 'relative' }}>
               Crear cuenta gratuita →
             </Link>
           </div>
@@ -493,7 +493,7 @@ export default function LandingPage() {
             </div>
             <p style={{ fontSize: 11, color: '#1e293b', margin: 0 }}>© 2026 Scrapper. Todos los derechos reservados.</p>
             <div style={{ display: 'flex', gap: 20 }}>
-              {[['Iniciar sesión', '/auth?tab=login'], ['Registrarse', '/auth?tab=register']].map(([label, href]) => (
+              {[['Iniciar sesión', '/dashboard'], ['Registrarse', '/dashboard']].map(([label, href]) => (
                 <Link key={href} href={href} style={{ fontSize: 12, color: '#334155', textDecoration: 'none', transition: 'color 0.2s' }}
                   onMouseEnter={e => (e.currentTarget.style.color = '#94a3b8')}
                   onMouseLeave={e => (e.currentTarget.style.color = '#334155')}

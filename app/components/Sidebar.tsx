@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSession, signOut } from 'next-auth/react';
 import {
   LayoutDashboard,
   Radio,
@@ -11,7 +10,6 @@ import {
   User,
   ChevronLeft,
   ChevronRight,
-  LogOut,
 } from 'lucide-react';
 import { SettingsModal } from './SettingsModal';
 
@@ -22,7 +20,6 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { data: session } = useSession();
   const [collapsed, setCollapsed] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -44,7 +41,7 @@ export function Sidebar() {
   const isActive = (href: string, exact: boolean) =>
     exact ? pathname === href : pathname.startsWith(href);
 
-  const userEmail = session?.user?.email ?? 'Usuario';
+  const userEmail = 'Usuario';
 
   return (
     <>
@@ -112,16 +109,6 @@ export function Sidebar() {
             )}
           </button>
 
-          {/* Inline user menu */}
-          {userMenuOpen && (
-            <button
-              onClick={() => signOut({ callbackUrl: '/auth' })}
-              className="w-full flex items-center gap-3 px-2 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-            >
-              <LogOut size={18} className="shrink-0" />
-              {!collapsed && <span className="truncate">Cerrar sesión</span>}
-            </button>
-          )}
         </div>
       </aside>
 

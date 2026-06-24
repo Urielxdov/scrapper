@@ -1,6 +1,6 @@
 import { INotificationPort } from '../../domain/ports/notification.port';
 import { IMonitorRepository } from '@/lib/monitoring/domain/ports/monitor-repository.port';
-import { IUserRepository } from '@/lib/auth/domain/ports/user-repository.port';
+import { IUserRepository } from '@/lib/shared/types/user.types';
 import { DiffEntry, ChangeType } from '@/lib/shared/types/monitor.types';
 
 type NotifyInput = {
