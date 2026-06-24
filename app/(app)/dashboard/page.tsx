@@ -1,6 +1,8 @@
+// app/(app)/dashboard/page.tsx
 import Link from 'next/link';
 import { prisma } from '@/lib/shared/prisma';
 import { DeleteMonitorButton } from '@/app/components/DeleteMonitorButton';
+import { ChangesFeed } from './components/ChangesFeed';
 
 export default async function DashboardPage() {
   const monitors = await prisma.monitor.findMany({
@@ -29,8 +31,8 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="max-w-6xl mx-auto w-full p-8">
-      <div className="flex justify-between items-center mb-8">
+    <main className="max-w-6xl mx-auto w-full p-8 space-y-8">
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-ink">Dashboard</h1>
         <Link
           href="/monitors/new"
@@ -40,7 +42,8 @@ export default async function DashboardPage() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-4">
         {[
           { label: 'Monitores activos', value: monitors.filter(m => m.isActive).length },
           { label: 'Alertas hoy', value: alertsToday },
@@ -53,6 +56,7 @@ export default async function DashboardPage() {
         ))}
       </div>
 
+      {/* Monitors table */}
       <div className="bg-surface border border-edge rounded-xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-surface-muted border-b border-edge">
@@ -73,7 +77,11 @@ export default async function DashboardPage() {
             )}
             {monitors.map(m => (
               <tr key={m.id} className="border-b border-edge last:border-0 hover:bg-surface-muted transition-colors">
-                <td className="px-4 py-3 font-medium text-ink">{m.name ?? m.id.slice(0, 8)}</td>
+                <td className="px-4 py-3 font-medium text-ink">
+                  <Link href={`/monitors/${m.id}`} className="hover:text-blue-500 transition-colors">
+                    {m.name ?? m.id.slice(0, 8)}
+                  </Link>
+                </td>
                 <td className="px-4 py-3 text-ink-muted max-w-[220px] truncate">{m.target.url}</td>
                 <td className="px-4 py-3">
                   <span className={`inline-block w-3 h-3 rounded-full ${statusColor(m)}`} />
@@ -86,6 +94,16 @@ export default async function DashboardPage() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Changes feed */}
+      <div className="bg-surface border border-edge rounded-xl shadow-sm">
+        <div className="px-5 py-4 border-b border-edge">
+          <h2 className="text-sm font-semibold text-ink">Últimos cambios</h2>
+        </div>
+        <div className="px-5">
+          <ChangesFeed />
+        </div>
       </div>
     </main>
   );
