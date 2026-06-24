@@ -27,12 +27,19 @@ services:
     volumes:
       - redis_data:/data
 
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "8025:8025"   # Web UI — ver emails en http://localhost:8025
+      - "1025:1025"   # SMTP interno
+
   migrate:
     build:
       context: .
       dockerfile: Dockerfile.worker
     command: npx prisma migrate deploy
-    env_file: .env.local
+    env_file: .env
     depends_on:
       - postgres
     restart: "no"
@@ -44,13 +51,15 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-    env_file: .env.local
+    env_file: .env
     depends_on:
       migrate:
         condition: service_completed_successfully
       mongo:
         condition: service_started
       redis:
+        condition: service_started
+      mailpit:
         condition: service_started
 
   worker:
@@ -58,13 +67,15 @@ services:
       context: .
       dockerfile: Dockerfile.worker
     restart: unless-stopped
-    env_file: .env.local
+    env_file: .env
     depends_on:
       migrate:
         condition: service_completed_successfully
       mongo:
         condition: service_started
       redis:
+        condition: service_started
+      mailpit:
         condition: service_started
 
 volumes:
